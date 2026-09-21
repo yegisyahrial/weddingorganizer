@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eternia Wedding & Event Organizer | Luxury Wedding Planner & Digital Invitation</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Playfair Display (Luxury Serif) & Plus Jakarta Sans (Modern Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            100: '#FDFBF7',
+                            200: '#F7EFE2',
+                            300: '#EAD3B3',
+                            400: '#D8B382',
+                            500: '#C5A059', // Primary Luxury Gold
+                            600: '#A37E3B',
+                            700: '#816027',
+                        },
+                        champagne: {
+                            50: '#FCFBF8',
+                            100: '#FAF6F0',
+                            200: '#F4ECE1',
+                            300: '#E7D8C4',
+                        },
+                        ebony: {
+                            900: '#1A1817',
+                            800: '#2A2725',
+                            700: '#3D3936'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'luxury': '0 20px 40px -15px rgba(197, 160, 89, 0.15)',
+                        'soft': '0 10px 30px rgba(0,0,0,0.04)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FAF6F0;
+            color: #2A2725;
+            overflow-x: hidden;
+        }
+
+        /* SPA View Switcher Transitions */
+        .page-view {
+            display: none;
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .page-view.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glassmorphism Luxury Styling */
+        .glass-card {
+            background: rgba(255, 251, 247, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(234, 211, 179, 0.5);
+        }
+
+        .glass-card-interactive {
+            background: rgba(255, 251, 247, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(234, 211, 179, 0.5);
+            transition: all 0.35s ease;
+        }
+
+        .glass-card-interactive:hover {
+            border-color: #C5A059;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -15px rgba(197, 160, 89, 0.2);
+        }
+
+        /* Decorative Gold Flourish Background */
+        .bg-pattern {
+            background-image: radial-gradient(rgba(197, 160, 89, 0.12) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+
+        /* Toast Popup Styling */
+        #toast {
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF6F0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D8B382;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C5A059;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-gold-500 selection:text-white">
+
+    <header class="sticky top-0 z-40 bg-champagne-100/90 backdrop-blur-xl border-b border-gold-300/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-22 py-4">
+                
+                <!-- Brand Logo -->
+                <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center space-x-3 group">
+                    <div class="w-11 h-11 rounded-full border-2 border-gold-500 flex items-center justify-center text-gold-600 bg-white shadow-luxury group-hover:scale-105 transition-transform">
+                        <span class="font-serif text-2xl font-bold tracking-tighter">E</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-serif font-bold text-xl sm:text-2xl tracking-wide text-ebony-900 group-hover:text-gold-600 transition-colors">ETERNIA</span>
+                        <span class="text-[9px] text-gold-600 tracking-[0.25em] font-semibold uppercase -mt-1">Wedding & Event Organizer</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex items-center space-x-1 xl:space-x-2">
+                    <button onclick="navigateTo('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-full text-xs font-medium uppercase tracking-wider text-ebony-800 hover:text-gold-600 hover:bg-gold-200/50 transition-all">Beranda</button>
+                    <button onclick="navigateTo('portfolio')" id="nav-portfolio" class="nav-btn px-4 py-2 rounded-full text-xs font-medium uppercase tracking-wider text-ebony-800 hover:text-gold-600 hover:bg-gold-200/50 transition-all">Portofolio</button>
+                    <button onclick="navigateTo('workflow')" id="nav-workflow" class="nav-btn px-4 py-2 rounded-full text-xs font-medium uppercase tracking-wider text-ebony-800 hover:text-gold-600 hover:bg-gold-200/50 transition-all">Alur Kerja</button>
+                    <button onclick="navigateTo('pricing')" id="nav-pricing" class="nav-btn px-4 py-2 rounded-full text-xs font-medium uppercase tracking-wider text-ebony-800 hover:text-gold-600 hover:bg-gold-200/50 transition-all">Paket Harga</button>
+                    <button onclick="navigateTo('gallery')" id="nav-gallery" class="nav-btn px-4 py-2 rounded-full text-xs font-medium uppercase tracking-wider text-ebony-800 hover:text-gold-600 hover:bg-gold-200/50 transition-all">Galeri</button>
+                </nav>
+
+                <!-- Desktop CTA Button -->
+                <div class="hidden lg:flex items-center space-x-3">
+                    <button onclick="navigateTo('booking')" class="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-semibold px-6 py-2.5 rounded-full text-xs uppercase tracking-widest shadow-luxury transition-all transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-calendar-heart mr-2"></i> Konsultasi Gratis
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-ebony-900 hover:text-gold-600 p-2 rounded-full focus:outline-none bg-gold-200/50 border border-gold-300">
+                        <i id="mobile-menu-icon" class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Navigation -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-gold-100 border-b border-gold-300 px-6 pt-3 pb-6 space-y-2">
+            <button onclick="navigateTo('home'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-ebony-900 hover:bg-gold-200 hover:text-gold-700">Beranda</button>
+            <button onclick="navigateTo('portfolio'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-ebony-900 hover:bg-gold-200 hover:text-gold-700">Portofolio Acara</button>
+            <button onclick="navigateTo('workflow'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-ebony-900 hover:bg-gold-200 hover:text-gold-700">Alur Kerja & Tahapan</button>
+            <button onclick="navigateTo('pricing'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-ebony-900 hover:bg-gold-200 hover:text-gold-700">Paket Harga & Layanan</button>
+            <button onclick="navigateTo('gallery'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-ebony-900 hover:bg-gold-200 hover:text-gold-700">Galeri & Undangan Digital</button>
+            <div class="pt-3">
+                <button onclick="navigateTo('booking'); toggleMobileMenu()" class="w-full bg-gradient-to-r from-gold-500 to-gold-600 text-white font-bold py-3 rounded-full text-center shadow-luxury">
+                    Konsultasi & Reservasi Tanggal
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow relative">
+
+        <!-- ==================== VIEW 1: BERANDA (HOME) ==================== -->
+        <section id="view-home" class="page-view active">
+            <!-- Hero Section -->
+            <div class="relative bg-pattern py-20 lg:py-32 px-4 overflow-hidden">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Left Hero Content -->
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 bg-gold-200/80 border border-gold-300 px-4 py-1.5 rounded-full text-xs font-semibold text-gold-700 tracking-wider uppercase">
+                            <i class="fa-solid fa-crown text-gold-600"></i>
+                            <span>Premier Luxury Wedding Organizer</span>
+                        </div>
+                        
+                        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ebony-900 leading-[1.2]">
+                            Mewujudkan Pernikahan Impian Dengan <span class="italic text-gold-600 font-normal">Sempurna & Elegansi Tanpa Batas</span>
+                        </h1>
+                        
+                        <p class="text-ebony-700 text-base sm:text-lg max-w-2xl font-light leading-relaxed mx-auto lg:mx-0">
+                            Eternia siap mengabadikan momen paling berharga dalam hidup Anda. Mulai dari perencanaan konsep eksklusif, koordinasi vendor terbaik, hingga undangan digital interaktif modern.
+                        </p>
+
+                        <!-- Call to Action Buttons -->
+                        <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4">
+                            <button onclick="navigateTo('booking')" class="bg-gradient-to-r from-gold-500 to-gold-600 hover:scale-[1.02] text-white font-bold px-8 py-4 rounded-full shadow-luxury transition-all text-center text-xs uppercase tracking-widest flex items-center justify-center gap-3">
+                                <span>Rencanakan Pernikahan Anda</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <button onclick="navigateTo('portfolio')" class="glass-card hover:bg-gold-200/50 text-ebony-900 font-semibold px-8 py-4 rounded-full transition-all text-center text-xs uppercase tracking-widest border border-gold-300">
+                                <i class="fa-solid fa-images mr-2 text-gold-600"></i> Lihat Portofolio
+                            </button>
+                        </div>
+
+                        <!-- Trust Features -->
+                        <div class="pt-8 border-t border-gold-300/50 grid grid-cols-3 gap-4 text-center lg:text-left">
+                            <div>
+                                <p class="font-serif text-2xl sm:text-3xl font-bold text-gold-600">350+</p>
+                                <p class="text-xs text-ebony-700 font-medium">Acara Terselenggara</p>
+                            </div>
+                            <div>
+                                <p class="font-serif text-2xl sm:text-3xl font-bold text-gold-600">99.8%</p>
+                                <p class="text-xs text-ebony-700 font-medium">Tingkat Kepuasan</p>
+                            </div>
+                            <div>
+                                <p class="font-serif text-2xl sm:text-3xl font-bold text-gold-600">50+</p>
+                                <p class="text-xs text-ebony-700 font-medium">Partner Vendor Premium</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Hero Featured Image Stack -->
+                    <div class="lg:col-span-5 relative">
+                        <div class="relative mx-auto max-w-md lg:max-w-none">
+                            <div class="glass-card p-4 rounded-3xl shadow-luxury border border-gold-300/60 relative z-10">
+                                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Luxury Wedding Venue Setup" class="rounded-2xl w-full h-[420px] object-cover shadow-md">
+                                <div class="absolute -bottom-6 -left-6 glass-card p-4 rounded-2xl border border-gold-300 hidden sm:flex items-center gap-4 shadow-luxury">
+                                    <div class="w-12 h-12 rounded-full bg-gold-500 text-white flex items-center justify-center text-xl">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-serif font-bold text-sm text-ebony-900">Concept & Execution</p>
+                                        <p class="text-xs text-gold-700">100% Custom Tailored</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Quick Service Highlights -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-gold-600 font-semibold uppercase tracking-widest text-xs">Layanan Unggulan Kami</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-ebony-900 mt-2">Solusi Pernikahan Komprehensif</h2>
+                    <p class="text-ebony-700 mt-3 text-sm leading-relaxed">Kami menghadirkan perpaduan sempurna antara manajemen acara langsung di hari H serta teknologi undangan digital premium.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Card 1 -->
+                    <div class="glass-card-interactive p-8 rounded-3xl text-center">
+                        <div class="w-16 h-16 rounded-full bg-gold-200 text-gold-600 flex items-center justify-center text-2xl mx-auto mb-6 border border-gold-300">
+                            <i class="fa-solid fa-gem"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-ebony-900 mb-3">Full Event Organizer</h3>
+                        <p class="text-ebony-700 text-xs leading-relaxed">Pendampingan penuh dari perancangan konsep awal, pemilihan venue, manajemen anggaran, hingga eksekusi panggung utama.</p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="glass-card-interactive p-8 rounded-3xl text-center">
+                        <div class="w-16 h-16 rounded-full bg-gold-200 text-gold-600 flex items-center justify-center text-2xl mx-auto mb-6 border border-gold-300">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-ebony-900 mb-3">Undangan Digital Premium</h3>
+                        <p class="text-ebony-700 text-xs leading-relaxed">Website undangan elegan dengan fitur musik background, RSVP otomatis, galeri kenangan, konfirmasi ucapan, dan peta lokasi interaktif.</p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="glass-card-interactive p-8 rounded-3xl text-center">
+                        <div class="w-16 h-16 rounded-full bg-gold-200 text-gold-600 flex items-center justify-center text-2xl mx-auto mb-6 border border-gold-300">
+                            <i class="fa-solid fa-clipboard-user"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-ebony-900 mb-3">D-Day Event Planner</h3>
+                        <p class="text-ebony-700 text-xs leading-relaxed">Pengawasan ketat profesional pada Hari H untuk memastikan seluruh jadwal rundown, pengantin, dan tamu VIP berjalan sempurna.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Client Testimonials Slider Cards -->
+            <div class="bg-champagne-200/50 py-20 border-y border-gold-300/40">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-2xl mx-auto mb-14">
+                        <span class="text-gold-600 font-semibold uppercase tracking-widest text-xs">Kisah Bahagia</span>
+                        <h2 class="font-serif text-3xl font-bold text-ebony-900 mt-2">Apa Kata Pengantin Eternia</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="glass-card p-8 rounded-3xl border border-gold-300 flex flex-col justify-between">
+                            <div>
+                                <div class="flex text-gold-500 text-xs gap-1 mb-4">
+                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                </div>
+                                <p class="text-ebony-800 text-xs sm:text-sm italic leading-relaxed mb-6">"Eternia membuat hari pernikahan kami terasa santai tanpa stres sedikitpun. Tim WO sangat sigap dan undangan digitalnya dipuji semua kerabat!"</p>
+                            </div>
+                            <div class="flex items-center space-x-3 pt-4 border-t border-gold-300/50">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Client 1" class="w-11 h-11 rounded-full object-cover border-2 border-gold-500">
+                                <div>
+                                    <h5 class="font-serif font-bold text-sm text-ebony-900">Anindya & Rendy</h5>
+                                    <p class="text-[11px] text-gold-700">Pernikahan Modern Ballroom</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-8 rounded-3xl border border-gold-300 flex flex-col justify-between">
+                            <div>
+                                <div class="flex text-gold-500 text-xs gap-1 mb-4">
+                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                </div>
+                                <p class="text-ebony-800 text-xs sm:text-sm italic leading-relaxed mb-6">"Pernikahan adat Jawa kami ditangani dengan luar biasa detail. Koordinasi keluarga besar dan vendor berjalan mulus sesuai rencana."</p>
+                            </div>
+                            <div class="flex items-center space-x-3 pt-4 border-t border-gold-300/50">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Client 2" class="w-11 h-11 rounded-full object-cover border-2 border-gold-500">
+                                <div>
+                                    <h5 class="font-serif font-bold text-sm text-ebony-900">Siti & Dimas</h5>
+                                    <p class="text-[11px] text-gold-700">Pernikahan Adat Tradisional</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-8 rounded-3xl border border-gold-300 flex flex-col justify-between">
+                            <div>
+                                <div class="flex text-gold-500 text-xs gap-1 mb-4">
+                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                </div>
+                                <p class="text-ebony-800 text-xs sm:text-sm italic leading-relaxed mb-6">"Konsep Intimate Outdoor Wedding di Bali benar-benar impian yang jadi kenyataan. Terima kasih Eternia telah mewujudkannya!"</p>
+                            </div>
+                            <div class="flex items-center space-x-3 pt-4 border-t border-gold-300/50">
+                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="Client 3" class="w-11 h-11 rounded-full object-cover border-2 border-gold-500">
+                                <div>
+                                    <h5 class="font-serif font-bold text-sm text-ebony-900">Clara & Michael</h5>
+                                    <p class="text-[11px] text-gold-700">Intimate Garden Wedding</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 2: PORTOFOLIO ACARA ==================== -->
+        <section id="view-portfolio" class="page-view">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="text-gold-600 font-semibold uppercase tracking-widest text-xs">Karya & Dokumentasi</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-ebony-900 mt-2">Portofolio Acara & Undangan</h2>
+                    <p class="text-ebony-700 mt-2 text-sm">Lihat berbagai konsep dekorasi, tema pernikahan, dan karya undangan digital yang telah kami garap.</p>
+                </div>
+
+                <!-- Category Filter Pills -->
+                <div class="flex flex-wrap justify-center gap-3 mb-12">
+                    <button onclick="filterPortfolio('all')" class="port-filter-btn active bg-gold-500 text-white px-5 py-2 rounded-full text-xs font-semibold shadow-md transition-all">Semua Portofolio</button>
+                    <button onclick="filterPortfolio('traditional')" class="port-filter-btn bg-gold-200/80 text-ebony-800 hover:bg-gold-300 px-5 py-2 rounded-full text-xs font-semibold transition-all">Pernikahan Adat</button>
+                    <button onclick="filterPortfolio('modern')" class="port-filter-btn bg-gold-200/80 text-ebony-800 hover:bg-gold-300 px-5 py-2 rounded-full text-xs font-semibold transition-all">Modern International</button>
+                    <button onclick="filterPortfolio('outdoor')" class="port-filter-btn bg-gold-200/80 text-ebony-800 hover:bg-gold-300 px-5 py-2 rounded-full text-xs font-semibold transition-all">Intimate Outdoor</button>
+                    <button onclick="filterPortfolio('invitation')" class="port-filter-btn bg-gold-200/80 text-ebony-800 hover:bg-gold-300 px-5 py-2 rounded-full text-xs font-semibold transition-all">Undangan Digital</button>
+                </div>
+
+                <!-- Portfolio Items Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Item 1 -->
+                    <div class="port-item traditional glass-card rounded-3xl overflow-hidden border border-gold-300/80 shadow-luxury group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="Traditional Wedding" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-4 left-4 bg-gold-500 text-white text-[10px] uppercase tracking-wider font-bold px-3 py-1 rounded-full">Jawa Modern</span>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="font-serif font-bold text-lg text-ebony-900 mb-1">The Royal Java Wedding</h4>
+                            <p class="text-xs text-gold-700 mb-3"><i class="fa-solid fa-location-dot mr-1"></i> Hotel Indonesia Kempinski, Jakarta</p>
+                            <p class="text-xs text-ebony-700 leading-relaxed">Perpaduan keagungan adat Jawa Sunda dengan tata lampu dan busana kurasi desainer nasional.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="port-item modern glass-card rounded-3xl overflow-hidden border border-gold-300/80 shadow-luxury group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="Modern Wedding" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-4 left-4 bg-gold-500 text-white text-[10px] uppercase tracking-wider font-bold px-3 py-1 rounded-full">Grand Ballroom</span>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="font-serif font-bold text-lg text-ebony-900 mb-1">White Crystal Glamour</h4>
+                            <p class="text-xs text-gold-700 mb-3"><i class="fa-solid fa-location-dot mr-1"></i> The Ritz-Carlton Pacific Place</p>
+                            <p class="text-xs text-ebony-700 leading-relaxed">Dekorasi megah serba putih berhiaskan kristal gantung dan karpet kaca kristal kemilau.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="port-item outdoor glass-card rounded-3xl overflow-hidden border border-gold-300/80 shadow-luxury group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=600&q=80" alt="Outdoor Wedding" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-4 left-4 bg-gold-500 text-white text-[10px] uppercase tracking-wider font-bold px-3 py-1 rounded-full">Sunset Cliff</span>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="font-serif font-bold text-lg text-ebony-900 mb-1">Sunset Cliff Romance</h4>
+                            <p class="text-xs text-gold-700 mb-3"><i class="fa-solid fa-location-dot mr-1"></i> Uluwatu Cliff Resort, Bali</p>
+                            <p class="text-xs text-ebony-700 leading-relaxed">Upacara janji suci berlatar belakang pemandangan samudra lepas dan tebing eksotis.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="port-item invitation glass-card rounded-3xl overflow-hidden border border-gold-300/80 shadow-luxury group">
+                        <div class="relative h-64 overflow-hidden bg-gold-200 flex items-center justify-center p-6">
+                            <div class="bg-white p-6 rounded-2xl shadow-luxury text-center max-w-xs border border-gold-300">
+                                <p class="font-serif italic text-gold-600 text-sm">Digital Invitation</p>
+                                <h5 class="font-serif font-bold text-ebony-900 text-lg my-2">Nadia & Adrian</h5>
+                                <p class="text-[10px] text-ebony-700 uppercase tracking-widest">Interactive RSVP & Live Stream</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="font-serif font-bold text-lg text-ebony-900 mb-1">Theme: Champagne Elegance</h4>
+                            <p class="text-xs text-gold-700 mb-3"><i class="fa-solid fa-mobile-screen mr-1"></i> Full Custom Digital Invitation</p>
+                            <p class="text-xs text-ebony-700 leading-relaxed">Dilengkapi dengan musik kustom, e-gift digital, pengingat kalender, dan galeri prewedding HD.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 3: ALUR KERJA (WORKFLOW) ==================== -->
+        <section id="view-workflow" class="page-view">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-gold-600 font-semibold uppercase tracking-widest text-xs">Tahapan Profesional</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-ebony-900 mt-2">Alur Kerja & Perencanaan Event</h2>
+                    <p class="text-ebony-700 mt-2 text-sm">Bagaimana kami mengawal hari istimewa Anda dari nol hingga sukses terlaksana tanpa kendala.</p>
+                </div>
+
+                <!-- Step-by-Step Interactive Timeline -->
+                <div class="max-w-4xl mx-auto space-y-6">
+                    
+                    <!-- Step 1 -->
+                    <div class="glass-card rounded-3xl p-6 sm:p-8 border border-gold-300 relative flex flex-col sm:flex-row gap-6 items-start">
+                        <div class="w-14 h-14 rounded-2xl bg-gold-500 text-white font-serif font-bold text-2xl flex items-center justify-center shrink-0 shadow-luxury">
+                            01
+                        </div>
+                        <div class="space-y-2">
+                            <span class="text-xs font-semibold text-gold-700 uppercase tracking-wider">Tahap Awal</span>
+                            <h3 class="font-serif font-bold text-xl text-ebony-900">Konsultasi Bebas & Penggalian Konsep</h3>
+                            <p class="text-xs sm:text-sm text-ebony-700 leading-relaxed">Diskusi mendalam mengenai visi pernikahan impian Anda, estimasi alokasi anggaran, preferensi gaya/tema, serta jadwal ketersediaan tanggal acara.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="glass-card rounded-3xl p-6 sm:p-8 border border-gold-300 relative flex flex-col sm:flex-row gap-6 items-start">
+                        <div class="w-14 h-14 rounded-2xl bg-gold-500 text-white font-serif font-bold text-2xl flex items-center justify-center shrink-0 shadow-luxury">
+                            02
+                        </div>
+                        <div class="space-y-2">
+                            <span class="text-xs font-semibold text-gold-700 uppercase tracking-wider">Tahap Perancangan</span>
+                            <h3 class="font-serif font-bold text-xl text-ebony-900">Moodboard & Kurasi Vendor Best-Match</h3>
+                            <p class="text-xs sm:text-sm text-ebony-700 leading-relaxed">Eternia menyusun *moodboard* visual, merekomendasikan pilihan vendor terpercaya (Catering, Decoration, MUA, Photography), serta negosiasi harga terbaik.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="glass-card rounded-3xl p-6 sm:p-8 border border-gold-300 relative flex flex-col sm:flex-row gap-6 items-start">
+                        <div class="w-14 h-14 rounded-2xl bg-gold-500 text-white font-serif font-bold text-2xl flex items-center justify-center shrink-0 shadow-luxury">
+                            03
+                        </div>
+                        <div class="space-y-2">
+                            <span class="text-xs font-semibold text-gold-700 uppercase tracking-wider">Tahap Publikasi</span>
+                            <h3 class="font-serif font-bold text-xl text-ebony-900">Pembuatan Undangan Digital & Technical Meeting</h3>
+                            <p class="text-xs sm:text-sm text-ebony-700 leading-relaxed">Penerbitan link undangan digital khusus tamu, pendataan RSVP, serta memimpin rapat koordinasi teknis (*Technical Meeting*) bersama seluruh vendor dan keluarga.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="glass-card rounded-3xl p-6 sm:p-8 border border-gold-300 relative flex flex-col sm:flex-row gap-6 items-start">
+                        <div class="w-14 h-14 rounded-2xl bg-gold-500 text-white font-serif font-bold text-2xl flex items-center justify-center shrink-0 shadow-luxury">
+                            04
+                        </div>
+                        <div class="space-y-2">
+                            <span class="text-xs font-semibold text-gold-700 uppercase tracking-wider">Tahap Eksekusi</span>
+                            <h3 class="font-serif font-bold text-xl text-ebony-900">Gladi Bersih & Eksekusi Hari H (D-Day Control)</h3>
+                            <p class="text-xs sm:text-sm text-ebony-700 leading-relaxed">Tim pengawas profesional berada di lapangan mengontrol waktu rundown, pelayanan tamu VIP, keutuhan katering, dan pendampingan penuh kedua pengantin.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 4: PAKET HARGA (PRICING) ==================== -->
+        <section id="view-pricing" class="page-view">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-gold-600 font-semibold uppercase tracking-widest text-xs">Pilihan Investasi Acara</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-ebony-900 mt-2">Paket Harga & Layanan Organisasi</h2>
+                    <p class="text-ebony-700 mt-2 text-sm">Sesuaikan pilihan paket perencanaan sesuai skala acara dan impian Anda.</p>
+                </div>
+
+                <!-- Pricing Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
+                    
+                    <!-- Tier 1: Intimate -->
+                    <div class="glass-card rounded-3xl p-8 border border-gold-300 flex flex-col justify-between">
+                        <div>
+                            <span class="bg-gold-200 text-gold-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Intimate Wedding</span>
+                            <h3 class="font-serif font-bold text-2xl text-ebony-900 mt-3">Classic Harmony</h3>
+                            <p class="text-xs text-ebony-700 mt-1">Sangat cocok untuk acara hangat hingga 150 tamu undangan.</p>
+
+                            <div class="my-6">
+                                <span class="text-xs text-ebony-700 block">Mulai dari</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="font-serif text-3xl font-bold text-gold-600">Rp 12.500.000</span>
+                                </div>
+                            </div>
+
+                            <ul class="space-y-3 text-xs text-ebony-800 mb-8 border-t border-gold-300/50 pt-4">
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-gold-600"></i> 6 Personil Tim WO Profesional Hari H</li>
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-gold-600"></i> Pendampingan Pengantin & Keluarga</li>
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-gold-600"></i> Penyusunan Rundown & Technical Meeting</li>
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-gold-600"></i> Gratis Undangan Digital Standard</li>
+                            </ul>
+                        </div>
+
+                        <button onclick="selectPackageAndRedirect('Classic Harmony (Intimate WO)', 12500000)" class="w-full bg-gold-200 hover:bg-gold-300 text-ebony-900 font-bold py-3.5 rounded-full transition-all text-xs uppercase tracking-wider">
+                            Pilih Paket Ini
+                        </button>
+                    </div>
+
+                    <!-- Tier 2: Grand Luxury (Popular) -->
+                    <div class="glass-card rounded-3xl p-8 border-2 border-gold-500 shadow-luxury flex flex-col justify-between relative transform md:-translate-y-3">
+                        <span class="absolute -top-3.5 right-6 bg-gradient-to-r from-gold-500 to-gold-600 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-md">
+                            PALING POPULER
+                        </span>
+
+                        <div>
+                            <span class="bg-gold-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Full Planning</span>
+                            <h3 class="font-serif font-bold text-2xl text-ebony-900 mt-3">Grand Elegance</h3>
+                            <p class="text-xs text-ebony-700 mt-1">Layanan perencanaan menyeluruh untuk resepsi ballroom & outdoor.</p>
+
+                            <div class="my-6">
+                                <span class="text-xs text-ebony-700 block">Mulai dari</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="font-serif text-3xl font-bold text-gold-600">Rp 28.000.000</span>
+                                </div>
+                            </div>
+
+                            <ul class="space-y-3 text-xs text-ebony-800 mb-8 border-t border-gold-300/50 pt-4">
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-gold-600"></i> 12 Personil Tim WO Profesional</li>
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-gold-600"></i> Manajemen Vendor & Negosiasi Kontrak</li>
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-gold-600"></i> Layanan Konsultasi Unlimited</li>
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-gold-600"></i> Undangan Digital Custom Custom Music & RSVP</li>
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-gold-600"></i> Gratis Buku Tamu QR Code Scanner</li>
+                            </ul>
+                        </div>
+
+                        <button onclick="selectPackageAndRedirect('Grand Elegance (Full WO)', 28000000)" class="w-full bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-bold py-4 rounded-full shadow-luxury transition-all text-xs uppercase tracking-wider">
+                            Pilih Paket Grand Elegance
+                        </button>
+                    </div>
+
+                    <!-- Tier 3: All-in Royal -->
+                    <div class="glass-card rounded-3xl p-8 border border-gold-300 flex flex-col justify-between">
+                        <div>
+                            <span class="bg-gold-200 text-gold-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">All-In Package</span>
+                            <h3 class="font-serif font-bold text-2xl text-ebony-900 mt-3">Royal Royal Majestic</h3>
+                            <p class="text-xs text-ebony-700 mt-1">Termasuk WO, Dekorasi, Catering, MUA & Dokumentasi lengkap.</p>
+
+                            <div class="my-6">
+                                <span class="text-xs text-ebony-700 block">Mulai dari</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="font-serif text-3xl font-bold text-gold-600">Rp 85.000.000</span>
+                                </div>
+                            </div>
+
+                            <ul class="space-y-3 text-xs text-ebony-800 mb-8 border-t border-gold-300/50 pt-4">
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-gold-600"></i> Tim WO Full Crews (16+ Personil)</li>
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-gold-600"></i> Paket Dekorasi Floral Luxury</li>
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-gold-600"></i> Katering Premium 500 Porsi</li>
+                                <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-gold-600"></i> Dokumentasi Foto & Video Cinematic</li>
+                            </ul>
+                        </div>
+
+                        <button onclick="selectPackageAndRedirect('Royal Majestic (All-in Package)', 85000000)" class="w-full bg-gold-200 hover:bg-gold-300 text-ebony-900 font-bold py-3.5 rounded-full transition-all text-xs uppercase tracking-wider">
+                            Pilih Paket Royal
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 5: GALERI DOKUMENTASI ==================== -->
+        <section id="view-gallery" class="page-view">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-gold-600 font-semibold uppercase tracking-widest text-xs">Momen Indah</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-ebony-900 mt-2">Galeri & Inspirasi Dekorasi</h2>
+                    <p class="text-ebony-700 mt-2 text-sm">Klik gambar untuk memperbesar tampilan momen berharga.</p>
+                </div>
+
+                <!-- Gallery Photo Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                    
+                    <div class="glass-card rounded-2xl overflow-hidden border border-gold-300 shadow-luxury cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80', 'Pelaminan Adat Jawa Modern')">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=500&q=80" alt="Gallery 1" class="w-full h-52 sm:h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+
+                    <div class="glass-card rounded-2xl overflow-hidden border border-gold-300 shadow-luxury cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80', 'Aisle Lighting & Flower Decoration')">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=500&q=80" alt="Gallery 2" class="w-full h-52 sm:h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+
+                    <div class="glass-card rounded-2xl overflow-hidden border border-gold-300 shadow-luxury cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1200&q=80', 'Intimate Outdoor Table Setup')">
+                        <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=500&q=80" alt="Gallery 3" class="w-full h-52 sm:h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+
+                    <div class="glass-card rounded-2xl overflow-hidden border border-gold-300 shadow-luxury cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80', 'Wedding Ring & Bride Details')">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=500&q=80" alt="Gallery 4" class="w-full h-52 sm:h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 6: FORMULIR PEMESANAN / KONSULTASI ==================== -->
+        <section id="view-booking" class="page-view">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-gold-600 font-semibold uppercase tracking-widest text-xs">Reservasi Tanggal</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-ebony-900 mt-2">Formulir Konsultasi & Pemesanan</h2>
+                    <p class="text-ebony-700 mt-2 text-sm">Isi detail rencana acara Anda untuk perhitungan estimasi dan konsultasi gratis via WhatsApp.</p>
+                </div>
+
+                <div class="glass-card rounded-3xl p-6 sm:p-10 border border-gold-300 shadow-luxury">
+                    <form id="bookingForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                        
+                        <!-- Couple Names -->
+                        <div>
+                            <h3 class="font-serif font-bold text-lg text-ebony-900 border-b border-gold-300/50 pb-3 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-user-group text-gold-600"></i> Informasi Calon Pengantin
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-xs font-bold text-ebony-800 uppercase tracking-wider mb-2">Nama Pengantin Wanita *</label>
+                                    <input type="text" id="brideName" required placeholder="Contoh: Anindya Putri" class="w-full px-4 py-3 rounded-xl bg-white border border-gold-300 text-ebony-900 focus:outline-none focus:border-gold-600 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-ebony-800 uppercase tracking-wider mb-2">Nama Pengantin Pria *</label>
+                                    <input type="text" id="groomName" required placeholder="Contoh: Rendy Pratama" class="w-full px-4 py-3 rounded-xl bg-white border border-gold-300 text-ebony-900 focus:outline-none focus:border-gold-600 text-sm">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-ebony-800 uppercase tracking-wider mb-2">Nomor WhatsApp Aktif *</label>
+                                    <input type="tel" id="contactPhone" required placeholder="081234567890" class="w-full px-4 py-3 rounded-xl bg-white border border-gold-300 text-ebony-900 focus:outline-none focus:border-gold-600 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-ebony-800 uppercase tracking-wider mb-2">Estimasi Tanggal Acara *</label>
+                                    <input type="date" id="eventDate" required class="w-full px-4 py-3 rounded-xl bg-white border border-gold-300 text-ebony-900 focus:outline-none focus:border-gold-600 text-sm">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Service Package Selection -->
+                        <div>
+                            <h3 class="font-serif font-bold text-lg text-ebony-900 border-b border-gold-300/50 pb-3 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-gift text-gold-600"></i> Pilih Paket Layanan
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <label class="relative flex flex-col p-4 bg-white rounded-2xl border border-gold-300 cursor-pointer hover:border-gold-600 transition-all">
+                                    <input type="radio" name="servicePackage" value="Classic Harmony (Intimate WO)" data-price="12500000" onchange="calculateEstimatedTotal()" class="hidden peer">
+                                    <span class="peer-checked:text-gold-600 font-serif font-bold text-ebony-900 text-sm">Classic Harmony</span>
+                                    <span class="text-xs text-ebony-700 mt-1">Rp 12.500.000</span>
+                                    <div class="absolute top-4 right-4 w-4 h-4 rounded-full border-2 border-gold-400 peer-checked:border-gold-600 peer-checked:bg-gold-600"></div>
+                                </label>
+
+                                <label class="relative flex flex-col p-4 bg-white rounded-2xl border border-gold-300 cursor-pointer hover:border-gold-600 transition-all">
+                                    <input type="radio" name="servicePackage" value="Grand Elegance (Full WO)" data-price="28000000" checked onchange="calculateEstimatedTotal()" class="hidden peer">
+                                    <span class="peer-checked:text-gold-600 font-serif font-bold text-ebony-900 text-sm">Grand Elegance</span>
+                                    <span class="text-xs text-ebony-700 mt-1">Rp 28.000.000</span>
+                                    <div class="absolute top-4 right-4 w-4 h-4 rounded-full border-2 border-gold-400 peer-checked:border-gold-600 peer-checked:bg-gold-600"></div>
+                                </label>
+
+                                <label class="relative flex flex-col p-4 bg-white rounded-2xl border border-gold-300 cursor-pointer hover:border-gold-600 transition-all">
+                                    <input type="radio" name="servicePackage" value="Royal Majestic (All-in Package)" data-price="85000000" onchange="calculateEstimatedTotal()" class="hidden peer">
+                                    <span class="peer-checked:text-gold-600 font-serif font-bold text-ebony-900 text-sm">Royal Majestic</span>
+                                    <span class="text-xs text-ebony-700 mt-1">Rp 85.000.000</span>
+                                    <div class="absolute top-4 right-4 w-4 h-4 rounded-full border-2 border-gold-400 peer-checked:border-gold-600 peer-checked:bg-gold-600"></div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Add-ons Selection -->
+                        <div>
+                            <h3 class="font-serif font-bold text-lg text-ebony-900 border-b border-gold-300/50 pb-3 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-sliders text-gold-600"></i> Layanan Tambahan (Opsional)
+                            </h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-3 p-3 bg-white/80 rounded-xl border border-gold-300 cursor-pointer">
+                                    <input type="checkbox" id="addon-digital-inv" value="Undangan Digital Custom Luxury" data-price="750000" onchange="calculateEstimatedTotal()" class="rounded text-gold-600 focus:ring-0">
+                                    <span class="text-xs font-semibold text-ebony-900">Website Undangan Digital Custom Luxury (+ Rp 750.000)</span>
+                                </label>
+
+                                <label class="flex items-center gap-3 p-3 bg-white/80 rounded-xl border border-gold-300 cursor-pointer">
+                                    <input type="checkbox" id="addon-qr-checkin" value="Sistem Check-in Buku Tamu QR Code" data-price="1200000" onchange="calculateEstimatedTotal()" class="rounded text-gold-600 focus:ring-0">
+                                    <span class="text-xs font-semibold text-ebony-900">Sistem Buku Tamu Digital & QR Code Check-in (+ Rp 1.200.000)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Price Summary -->
+                        <div class="bg-gold-200/60 p-6 rounded-2xl border border-gold-300 flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div>
+                                <span class="text-xs text-ebony-700 uppercase tracking-wider block font-semibold">Estimasi Total Investasi:</span>
+                                <span id="bookingTotalDisplay" class="font-serif text-3xl font-bold text-gold-600">Rp 28.000.000</span>
+                            </div>
+                            <button type="submit" class="w-full sm:w-auto bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-bold px-8 py-4 rounded-full shadow-luxury transition-all text-xs uppercase tracking-widest flex items-center justify-center gap-2">
+                                <i class="fa-brands fa-whatsapp text-lg"></i>
+                                <span>Kirim via WhatsApp</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- LIGHTBOX MODAL FOR GALLERY PHOTO PREVIEW -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="relative max-w-4xl w-full">
+            <button onclick="closeLightbox()" class="absolute -top-10 right-0 text-white hover:text-gold-400 text-2xl focus:outline-none">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <img id="lightbox-img" src="" alt="Gallery Preview" class="w-full max-h-[80vh] object-contain rounded-2xl border border-gold-300">
+            <p id="lightbox-caption" class="text-center text-white font-serif text-sm mt-4"></p>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION POPUP -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 bg-white text-ebony-900 px-6 py-4 rounded-2xl shadow-luxury border border-gold-300 flex items-center space-x-3 pointer-events-none">
+        <div class="w-8 h-8 rounded-full bg-gold-200 text-gold-600 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div>
+            <h5 class="font-serif font-bold text-sm" id="toast-title">Pesan Terkirim</h5>
+            <p class="text-xs text-ebony-700" id="toast-message">Mengalihkan ke WhatsApp Admin Eternia...</p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-ebony-900 text-champagne-300 border-t border-gold-300/30 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-full border border-gold-500 flex items-center justify-center text-gold-500 font-serif font-bold text-xl">
+                        E
+                    </div>
+                    <span class="font-serif font-bold text-lg text-white">ETERNIA ORGANIZER</span>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-6 text-xs font-medium uppercase tracking-wider text-champagne-300">
+                    <a href="javascript:void(0)" onclick="navigateTo('home')" class="hover:text-gold-400 transition-colors">Beranda</a>
+                    <a href="javascript:void(0)" onclick="navigateTo('portfolio')" class="hover:text-gold-400 transition-colors">Portofolio</a>
+                    <a href="javascript:void(0)" onclick="navigateTo('workflow')" class="hover:text-gold-400 transition-colors">Alur Kerja</a>
+                    <a href="javascript:void(0)" onclick="navigateTo('pricing')" class="hover:text-gold-400 transition-colors">Paket Harga</a>
+                    <a href="javascript:void(0)" onclick="navigateTo('gallery')" class="hover:text-gold-400 transition-colors">Galeri</a>
+                </div>
+
+                <div class="text-xs text-gold-600 font-light">
+                    &copy; 2026 Eternia Wedding Organizer. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC ENGINE -->
+    <script>
+        // 1. Single Page Application View Navigation Engine
+        function navigateTo(viewId) {
+            const views = document.querySelectorAll('.page-view');
+            views.forEach(v => v.classList.remove('active'));
+
+            const target = document.getElementById('view-' + viewId);
+            if(target) {
+                target.classList.add('active');
+            }
+
+            // Update Desktop Nav Styling Active States
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => {
+                btn.classList.remove('bg-gold-200/50', 'text-gold-600', 'font-bold');
+            });
+
+            const activeNav = document.getElementById('nav-' + viewId);
+            if(activeNav) {
+                activeNav.classList.add('bg-gold-200/50', 'text-gold-600', 'font-bold');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 2. Mobile Drawer Navigation Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                menu.classList.add('hidden');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        }
+
+        // 3. Portfolio Category Filtering
+        function filterPortfolio(category) {
+            const items = document.querySelectorAll('.port-item');
+            const btns = document.querySelectorAll('.port-filter-btn');
+
+            btns.forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-white', 'shadow-md');
+                btn.classList.add('bg-gold-200/80', 'text-ebony-800');
+            });
+
+            event.target.classList.remove('bg-gold-200/80', 'text-ebony-800');
+            event.target.classList.add('bg-gold-500', 'text-white', 'shadow-md');
+
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // 4. Dynamic Pricing Calculation Engine
+        function calculateEstimatedTotal() {
+            let total = 0;
+
+            const radios = document.getElementsByName('servicePackage');
+            radios.forEach(radio => {
+                if (radio.checked) {
+                    total += parseFloat(radio.getAttribute('data-price')) || 0;
+                }
+            });
+
+            const addOnDig = document.getElementById('addon-digital-inv');
+            if (addOnDig && addOnDig.checked) {
+                total += parseFloat(addOnDig.getAttribute('data-price')) || 0;
+            }
+
+            const addOnQr = document.getElementById('addon-qr-checkin');
+            if (addOnQr && addOnQr.checked) {
+                total += parseFloat(addOnQr.getAttribute('data-price')) || 0;
+            }
+
+            const formatted = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0
+            }).format(total);
+
+            document.getElementById('bookingTotalDisplay').innerText = formatted;
+        }
+
+        // 5. Select Package from Pricing Card & Redirect
+        function selectPackageAndRedirect(packageName, price) {
+            const radios = document.getElementsByName('servicePackage');
+            radios.forEach(radio => {
+                if (radio.value.includes(packageName.split(' ')[0])) {
+                    radio.checked = true;
+                }
+            });
+            calculateEstimatedTotal();
+            navigateTo('booking');
+        }
+
+        // 6. Form Submission & WhatsApp Order Generator
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const bride = document.getElementById('brideName').value;
+            const groom = document.getElementById('groomName').value;
+            const phone = document.getElementById('contactPhone').value;
+            const date = document.getElementById('eventDate').value;
+
+            let packageChoice = "";
+            const radios = document.getElementsByName('servicePackage');
+            radios.forEach(radio => {
+                if (radio.checked) packageChoice = radio.value;
+            });
+
+            let addOns = [];
+            const addOnDig = document.getElementById('addon-digital-inv');
+            if (addOnDig && addOnDig.checked) addOns.push(addOnDig.value);
+
+            const addOnQr = document.getElementById('addon-qr-checkin');
+            if (addOnQr && addOnQr.checked) addOns.push(addOnQr.value);
+
+            const totalFormatted = document.getElementById('bookingTotalDisplay').innerText;
+
+            showToast('Formulir Terkirim!', 'Mengalihkan ke WhatsApp Admin Eternia...');
+
+            const waNumber = "6281234567890";
+            const message = `*RESERVASI PERNIKAHAN - ETERNIA ORGANIZER*\n\n` +
+                            `*Calon Pengantin:*\n` +
+                            `- Wanita: ${bride}\n` +
+                            `- Pria: ${groom}\n` +
+                            `- WhatsApp: ${phone}\n` +
+                            `- Tanggal Acara: ${date}\n\n` +
+                            `*Pilihan Paket:*\n` +
+                            `- Layanan Utama: *${packageChoice}*\n` +
+                            `- Layanan Tambahan: ${addOns.length > 0 ? addOns.join(', ') : 'Tidak Ada'}\n` +
+                            `- Estimasi Total: *${totalFormatted}*\n\n` +
+                            `Halo Admin Eternia, mohon info jadwal diskusi konsultasi lanjutan. Terima kasih!`;
+
+            setTimeout(() => {
+                window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            }, 1200);
+        }
+
+        // 7. Lightbox Gallery Modal Controls
+        function openLightbox(imgSrc, caption) {
+            const lightbox = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = imgSrc;
+            document.getElementById('lightbox-caption').innerText = caption;
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+        }
+
+        // Toast Helper
+        function showToast(title, message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-message').innerText = message;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3500);
+        }
+
+        // Initialize Calculation on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            calculateEstimatedTotal();
+        });
+    </script>
+</body>
+</html>
